@@ -8,15 +8,18 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+gs_connection = connect_to_gs(st.secrets["gcp_service_account"])
+
+applications = fetch_google_sheets_data(gs_connection, application_master, prod_google_sheet_key, [])
+
 
 tab1, tab2 = st.tabs(["Applications", "Balances"])
 
 
 with tab1:
     st.markdown('#### Pending applications')
-    df = pd.DataFrame(np.random.randn(5, 5), columns=("col %d" % i for i in range(5)))
 
-    st.table(df)
+    st.table(applications)
 
     
     options = st.multiselect(
